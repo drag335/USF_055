@@ -16,9 +16,9 @@
 
 | | |
 |---|---|
-| 🎩 **Имя** | ТВОЁ ИМЯ |
+| 🎩 **Имя** | Yusuf |
 | 🏷 **Должность** | Capo di tutti codici |
-| 🗺 **Территория** | Unity · C# · всё, что требует рук |
+| 🗺 **Территория** | javaScript · C# · всё, что требует рук |
 | 🍝 **Любимое место** | Кухня. Где ещё |
 | 📜 **Правило №1** | Сначала дело, потом разговоры |
 
@@ -31,11 +31,10 @@
 <div align="center">
 
 <img src="https://img.shields.io/badge/C%23-000000?style=for-the-badge&logo=csharp&logoColor=C9A227" />
-<img src="https://img.shields.io/badge/Unity-8B0000?style=for-the-badge&logo=unity&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-8B0000?style=for-the-badge&logo=javascript&logoColor=white" />
 <img src="https://img.shields.io/badge/Git-000000?style=for-the-badge&logo=git&logoColor=C9A227" />
 <img src="https://img.shields.io/badge/GitHub-8B0000?style=for-the-badge&logo=github&logoColor=white" />
 <img src="https://img.shields.io/badge/Python-000000?style=for-the-badge&logo=python&logoColor=C9A227" />
-
 </div>
 
 ---
