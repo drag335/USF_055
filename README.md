@@ -44,7 +44,7 @@
 <div align="center">
 
 ### 🛍 ANY MALL
-*Idle-игра на Unity. Строишь торговый центр с нуля. Сначала ларёк, потом империя.*
+*javaScript. Строишь торговый центр с нуля. Сначала ларёк, потом империя.*
 
 ![Status](https://img.shields.io/badge/STATUS-IN%20PRODUCTION-8B0000?style=flat-square&labelColor=000000)
 ![Engine](https://img.shields.io/badge/ENGINE-UNITY-C9A227?style=flat-square&labelColor=000000)
