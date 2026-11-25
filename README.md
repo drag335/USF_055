@@ -87,13 +87,13 @@
 
 ---
 
-## 📞 Как найти tg;yys_26
+## 📞 Как найти 
 
 > Если есть разговор, пиши. Только не в воскресенье.
 
 <div align="center">
 
-<a href="https://t.me/USERNAME"><img src="https://img.shields.io/badge/Telegram-8B0000?style=for-the-badge&logo=telegram&logoColor=white" /></a>
+<a href="https://t.me/yys_26"><img src="https://img.shields.io/badge/Telegram-8B0000?style=for-the-badge&logo=telegram&logoColor=white" /></a>
 <a href="https://github.com/USERNAME"><img src="https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=C9A227" /></a>
 
 </div>
