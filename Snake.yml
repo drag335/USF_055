@@ -1,32 +1,81 @@
-name: Generate Snake
+#!/usr/bin/env python3
+"""
+Рисует узор на графике контрибуций GitHub через коммиты с нужными датами.
 
-on:
-  schedule:
-    - cron: "0 */12 * * *"
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+Как пользоваться:
+  1. Создай ПУСТОЙ новый публичный репозиторий (например, art), склонируй его.
+  2. Положи этот файл внутрь, зайди в папку репозитория.
+  3. Проверь, что git email = email, привязанный к твоему GitHub-аккаунту:
+         git config user.email
+  4. python3 commit_art.py --dry-run     (покажет, как будет выглядеть)
+  5. python3 commit_art.py               (создаст коммиты)
+  6. git branch -M main && git push -u origin main
+"""
+import os
+import subprocess
+import sys
+from datetime import date, datetime, timedelta
 
-permissions:
-  contents: write
+# Ровно 52 символа в строке, 7 строк (Вс..Сб).
+# '#' = обычная клетка, '*' = самая тёмная, ' ' = пусто
+PATTERN = [
+    ' #######  #####*   #     #  #####   ######  ####### ',  # Sun
+    ' #     #  #     #  #    ##  #    #  #          #    ',  # Mon
+    ' #     #  #     #  #   # #  #    *  #          #    ',  # Tue
+    ' #     #  #####*   #  #  #  #####   #####      #    ',  # Wed
+    ' #     #  #        # #   #  #    #  #          #    ',  # Thu
+    ' #     #  #        ##    #  #    #  #          #    ',  # Fri
+    ' #     #  #        #     #  #####*  ######     #    ',  # Sat
+]
 
-jobs:
-  generate:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Generate snake
-        uses: Platane/snk/svg-only@v3
-        with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/snake.svg?color_snake=#C9A227&color_dots=#161b22,#4a0000,#8B0000,#b22222,#C9A227
+COMMITS_LIGHT = 4    # сколько коммитов в день для '#'
+COMMITS_HEAVY = 12   # сколько коммитов в день для '*'
 
-      - name: Push to output branch
-        uses: crazy-max/ghaction-github-pages@v3.1.0
-        with:
-          target_branch: output
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+def main():
+    dry = "--dry-run" in sys.argv
+
+    assert len(PATTERN) == 7, "Нужно ровно 7 строк"
+    for i, row in enumerate(PATTERN):
+        assert len(row) == 52, f"Строка {i} имеет длину {len(row)}, нужно 52"
+
+    today = date.today()
+    # Воскресенье текущей недели (GitHub начинает неделю с воскресенья)
+    this_sunday = today - timedelta(days=(today.weekday() + 1) % 7)
+    start = this_sunday - timedelta(weeks=51)
+
+    days = []  # (дата, количество коммитов)
+    for col in range(52):
+        for row in range(7):
+            ch = PATTERN[row][col]
+            if ch == " ":
+                continue
+            d = start + timedelta(weeks=col, days=row)
+            if d > today:
+                continue
+            days.append((d, COMMITS_HEAVY if ch == "*" else COMMITS_LIGHT))
+
+    # Предпросмотр
+    print(f"Старт: {start}, клеток: {len(days)}, коммитов: {sum(n for _, n in days)}")
+    for row in PATTERN:
+        print(row.replace("#", "█").replace("*", "▓"))
+
+    if dry:
+        print("\n--dry-run: коммиты не созданы")
+        return
+
+    n_total = 0
+    for d, n in days:
+        for k in range(n):
+            stamp = datetime(d.year, d.month, d.day, 12, k % 60).strftime("%Y-%m-%dT%H:%M:%S")
+            env = dict(os.environ, GIT_AUTHOR_DATE=stamp, GIT_COMMITTER_DATE=stamp)
+            subprocess.run(
+                ["git", "commit", "--allow-empty", "-q", "-m", f"art {d} #{k + 1}"],
+                env=env, check=True,
+            )
+            n_total += 1
+    print(f"\nГотово: {n_total} коммитов. Теперь git push.")
+
+
+if __name__ == "__main__":
+    main()
